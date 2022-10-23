@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+
+    <table id="history" class="table table-striped" style="vertical-align:middle">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Distance</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Pace</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row['date'] }}</td>
+                <td>{{ row['time'] }}</td>
+                <td>{{ row['distance'] }}</td>
+                <td>{{ row['duration'] }}</td>
+                <td>{{ row['pace'] }}</td>
+            {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

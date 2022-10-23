@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tab watch icon -->
+    <link href="/static/watch.ico" rel="icon">
+    <link href="/static/act_styles.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js">
+    </script>
+    <title>Activity</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light border">
+        <a class="navbar-brand" href="/"><b><span class="blue">G</span><span class="red">P</span><span class="yellow">S</span><span class="green">5</span><span class="red">0</span></b></a> <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbar">
+            {% if session.user_id %}
+            <ul class="navbar-nav mr-auto mt-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="/upload">Upload</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/history">History</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto mt-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Log Out</a>
+                </li>
+            </ul>{% else %}
+            <ul class="navbar-nav ml-auto mt-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Log In</a>
+                </li>
+            </ul>{% endif %}
+        </div>
+
+    </nav><!-- Map pane -->
+    <div class="split left" id="map">
+        <div class="centered"></div>
+
+    </div><!-- Data pane -->
+    <div class="split right" id="data">
+        <div class="centered">
+            <h1>Activity Data</h1>{% for row in data %} {% endfor %}
+
+            <table class="table table-striped" id="data" style="vertical-align:middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Km</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Pace</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                    <tr>
+                        <td>{{ row[0] }}</td>
+                        <td>{{ row[6] }}</td>
+                        <td>{{ row[7] }}</td>
+                    {% endfor %}
+                    </tr>
+                    <tr>
+                        <td><b>{{ distance }}</b></td>
+                        <td><b>{{ duration }}</b></td>
+                        <td><b>{{ avg_pace }}</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>-</b></td>
+                        <td><b>-</b></td>
+                        <td><b>-</b></td>
+                    </tr>
+                    <tr>
+                        <td><b></b></td>
+                        <td><b></b></td>
+                        <td><b></b></td>
+                    </tr>
+                </tbody>
+                <tr>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+    <script>
+        // GPS coordinates extracted from XML file in 'application.py'
+        var flightPlanCoordinates = JSON.parse('{{ points|safe }}');
+
+        // Initialise map to first coordinate
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: flightPlanCoordinates[0],
+                zoom: 14
+            });
+
+        // Draw polyline from coordinates
+        var flightPath = new google.maps.Polyline({
+            path: flightPlanCoordinates,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 3
+        });
+
+        flightPath.setMap(map);
+        }
+
+    </script>
+    <!-- Google Maps API - insert personal key after key=... -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPGeUakwQ5WmyD5eTWQx-FhDyLgg-Cb98&callback=initMap"async defer>
+    </script>
+</html>

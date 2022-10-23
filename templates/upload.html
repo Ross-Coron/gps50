@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Upload
+{% endblock %}
+
+{% block main %}
+
+    <h1 style="padding-bottom: 50px">GPS50 - Upload Activity</h1>
+    <div class="col">
+        <form action="/upload" enctype="multipart/form-data" method="post">
+            <input name="file" type="file"> <button type="upload">Submit</button>
+        </form>
+    </div>
+
+{% endblock %}
